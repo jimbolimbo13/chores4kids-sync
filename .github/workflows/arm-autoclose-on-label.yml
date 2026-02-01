@@ -1,8 +1,6 @@
 name: Arm auto-close on label
 
-on:
-  issues:
-    types: [labeled]
+on: [workflow_dispatch]
 
 jobs:
   arm-autoclose:
@@ -53,5 +51,6 @@ jobs:
               issue_number: issue.number,
               body: `Auto-close armed via label **${process.env.TRIGGER_LABEL}**. If there's no reply, this issue will be auto-closed in **${process.env.GRACE_DAYS} day(s)**.\n\n<!-- autoclose:start:${nowIso} -->`
             });
+
 
             core.info(`Armed auto-close for #${issue.number} at ${nowIso}.`);
