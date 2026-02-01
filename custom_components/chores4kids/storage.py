@@ -98,6 +98,11 @@ class Task:
     # For non-winning siblings, this represents when the task was "lost/taken".
     fastest_wins_claimed_ts: Optional[int] = None
 
+    # If set, this is the id of the master task this task was assigned from.
+    # Unlike repeat_template_id (only for repeating templates), this is set
+    # whenever any task is assigned from an unassigned template to a child.
+    parent_task_id: Optional[str] = None
+
 class KidsChoresStore:
     def __init__(self, hass: HomeAssistant):
         self.hass = hass
@@ -266,6 +271,7 @@ class KidsChoresStore:
         fastest_wins: Optional[bool] = None,
         fastest_wins_template_id: Optional[str] = None,
         schedule_mode: Optional[str] = None,
+        parent_task_id: Optional[str] = None,
     ) -> Task:
         tid = str(uuid4())
         # normalize repeat days to list[int]
@@ -290,6 +296,7 @@ class KidsChoresStore:
             due=due,
             icon=(icon or "").strip(),
             repeat_template_id=(repeat_template_id or None),
+            parent_task_id=(parent_task_id or None),
         )
         from datetime import datetime, timezone
         t.created = datetime.now(timezone.utc).isoformat()
@@ -534,6 +541,7 @@ class KidsChoresStore:
                 quick_complete=bool(getattr(template, "quick_complete", False)),
                 skip_approval=bool(getattr(template, "skip_approval", False)),
                 categories=list(getattr(template, "categories", []) or []),
+                parent_task_id=template.id,
             )
             inst.early_bonus_enabled = bool(getattr(template, "early_bonus_enabled", False))
             inst.early_bonus_days = int(getattr(template, "early_bonus_days", 0) or 0)
@@ -578,6 +586,7 @@ class KidsChoresStore:
                 fastest_wins=bool(getattr(t, "fastest_wins", False)),
                 fastest_wins_template_id=(t.id if bool(getattr(t, "fastest_wins", False)) else None),
                 schedule_mode=getattr(t, "schedule_mode", None),
+                parent_task_id=t.id,
             )
             # add_task persists; nothing else to do
             return
@@ -832,6 +841,7 @@ class KidsChoresStore:
                             quick_complete=bool(getattr(template, "quick_complete", False)),
                             skip_approval=bool(getattr(template, "skip_approval", False)),
                             categories=list(getattr(template, "categories", []) or []),
+                            parent_task_id=template.id,
                         )
                         inst.early_bonus_enabled = bool(getattr(template, "early_bonus_enabled", False))
                         inst.early_bonus_days = int(getattr(template, "early_bonus_days", 0) or 0)
@@ -1193,7 +1203,8 @@ class KidsChoresStore:
                             persist_until_completed=True,
                             quick_complete=tpl.get("quick_complete", False),
                             skip_approval=tpl.get("skip_approval", False),
-                            categories=list(tpl.get("categories") or [])
+                            categories=list(tpl.get("categories") or []),
+                            parent_task_id=tpl_id,
                         )
                 continue
 
@@ -1237,7 +1248,8 @@ class KidsChoresStore:
                         persist_until_completed=(tpl.get("persist_until_completed", False) if mode in ("", "repeat") else False),
                         quick_complete=tpl.get("quick_complete", False),
                         skip_approval=tpl.get("skip_approval", False),
-                        categories=list(tpl.get("categories") or [])
+                        categories=list(tpl.get("categories") or []),
+                        parent_task_id=tpl_id or None,
                     )
 
         await self.async_save()

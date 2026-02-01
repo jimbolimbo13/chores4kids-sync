@@ -172,6 +172,7 @@ class KidsChoresPointsSensor(SensorEntity):
             "fastest_wins_claimed_by_child_id": getattr(t, "fastest_wins_claimed_by_child_id", None),
             "fastest_wins_claimed_by_child_name": getattr(t, "fastest_wins_claimed_by_child_name", None),
             "fastest_wins_claimed_ts": getattr(t, "fastest_wins_claimed_ts", None),
+            "parent_task_id": getattr(t, "parent_task_id", None),
         } for t in tasks]
         return {
             "child_id": ch.id,
@@ -239,6 +240,7 @@ class Chores4KidsAllTasksSensor(SensorEntity):
             "fastest_wins_claimed_by_child_id": getattr(t, "fastest_wins_claimed_by_child_id", None),
             "fastest_wins_claimed_by_child_name": getattr(t, "fastest_wins_claimed_by_child_name", None),
             "fastest_wins_claimed_ts": getattr(t, "fastest_wins_claimed_ts", None),
+            "parent_task_id": getattr(t, "parent_task_id", None),
         } for t in self._store.tasks]
         categories = [
             {
