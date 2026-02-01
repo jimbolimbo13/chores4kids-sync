@@ -1,10 +1,6 @@
 name: Toggle "New comment" label on issues
 
-on:
-  issue_comment:
-    types: [created]
-  issues:
-    types: [closed]
+on: [workflow_dispatch]
 
 permissions:
   issues: write
@@ -79,4 +75,5 @@ jobs:
               core.info(`Added label (new external comment): ${LABEL}`);
             } else {
               core.info(`Label already present: ${LABEL}`);
+
             }
