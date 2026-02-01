@@ -1,8 +1,6 @@
 name: Reopen issue when someone comments "reopen"
 
-on:
-  issue_comment:
-    types: [created, edited]
+on: [workflow_dispatch]
 
 permissions:
   issues: write
@@ -94,3 +92,4 @@ jobs:
             for (const name of labelsToRemove) {
               await removeLabelIfExists(name);
             }
+

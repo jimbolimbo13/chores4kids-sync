@@ -1,8 +1,6 @@
 name: Issue triage (label + prefix + conservative retitle + version questions)
 
-on:
-  issues:
-    types: [opened]
+on: [workflow_dispatch]
 
 permissions:
   issues: write

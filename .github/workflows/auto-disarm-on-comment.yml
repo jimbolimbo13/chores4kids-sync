@@ -1,8 +1,6 @@
 name: Disarm auto-close on reply
 
-on:
-  issue_comment:
-    types: [created]
+on: [workflow_dispatch]
 
 jobs:
   disarm-on-comment:
@@ -106,5 +104,6 @@ jobs:
               issue_number: issue.number,
               body: `Thanks for your reply! Auto-close has now been **disarmed** (label **${process.env.TRIGGER_LABEL}** has been removed).`
             });
+
 
             core.info(`#${issue.number}: reply from non-maintainer – auto-close disarmed`);

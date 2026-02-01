@@ -1,11 +1,6 @@
 name: "Issue automation: ready-for-release + release closing (bugs & features)"
 
-'on':
-  issues:
-    types: [labeled]
-  release:
-    types: [published]
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 permissions:
   issues: write

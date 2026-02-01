@@ -1,7 +1,6 @@
 name: Reset labels
 
-on:
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 permissions:
   issues: write
