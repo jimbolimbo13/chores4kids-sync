@@ -1,8 +1,6 @@
 name: Attach Integration ZIP to Release
 
 on:
-  release:
-    types: [published, prereleased]
   workflow_dispatch:
     inputs:
       tag:
