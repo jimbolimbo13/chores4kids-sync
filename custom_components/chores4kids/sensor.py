@@ -247,6 +247,7 @@ class Chores4KidsAllTasksSensor(SensorEntity):
                 "id": cat.id,
                 "name": cat.name,
                 "color": getattr(cat, "color", ""),
+                "icon": cat.icon,
             }
             for cat in getattr(self._store, "categories", [])
         ]
