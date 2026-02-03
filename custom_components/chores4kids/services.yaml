@@ -194,6 +194,10 @@ add_category:
       required: false
       description: "Hex color like #ff0000 (optional)"
       example: "#4ecdc4"
+    icon:
+      required: false
+      description: "Icon name like mdi:broom (optional)"
+      example: "mdi:broom"
 
 rename_category:
   name: Rename category
@@ -220,6 +224,18 @@ set_category_color:
       required: false
       description: "Hex color like #ff0000 (or empty to clear)"
       example: "#4ecdc4"
+
+set_category_icon:
+  name: Set category icon
+  description: Set the icon for a category (used in the card UI across devices).
+  fields:
+    category_id:
+      required: true
+      description: "Category id"
+    icon:
+      required: false
+      description: "Icon name like mdi:broom (or empty to clear)"
+      example: "mdi:broom"
 
 set_ui_colors:
   name: Set UI colors

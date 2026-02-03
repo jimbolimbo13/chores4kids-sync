@@ -39,6 +39,8 @@ class Category:
     name: str
     # Optional hex color (e.g. "#ff0000") used for UI chips. Empty means "no custom color".
     color: str = ""
+    # Optional icon (e.g. "mdi:broom") used for UI display. Empty means "no icon".
+    icon: str = ""
 
 @dataclass
 class Task:
@@ -1385,9 +1387,9 @@ class KidsChoresStore:
         raise ValueError("category_not_found")
 
     # --- Categories ---
-    async def add_category(self, name: str, color: str = "") -> Category:
+    async def add_category(self, name: str, color: str = "", icon: str = "") -> Category:
         cid = str(uuid4())
-        cat = Category(id=cid, name=str(name).strip(), color=self._normalize_hex_color(color))
+        cat = Category(id=cid, name=str(name).strip(), color=self._normalize_hex_color(color), icon=str(icon or "").strip())
         self.categories.append(cat)
         await self.async_save()
         return cat
@@ -1416,6 +1418,12 @@ class KidsChoresStore:
     async def set_category_color(self, category_id: str, color: str) -> Category:
         cat = self._get_category(category_id)
         cat.color = self._normalize_hex_color(color)
+        await self.async_save()
+        return cat
+
+    async def set_category_icon(self, category_id: str, icon: str) -> Category:
+        cat = self._get_category(category_id)
+        cat.icon = str(icon or "").strip()
         await self.async_save()
         return cat
 

@@ -182,7 +182,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.services.async_register(DOMAIN, "set_task_icon", svc_set_task_icon)
     # Categories
     async def svc_add_category(call: ServiceCall):
-        await store.add_category(call.data["name"], call.data.get("color", ""))
+        await store.add_category(call.data["name"], call.data.get("color", ""), call.data.get("icon", ""))
         async_dispatcher_send(hass, SIGNAL_DATA_UPDATED)
 
     async def svc_rename_category(call: ServiceCall):
@@ -197,10 +197,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await store.set_category_color(call.data["category_id"], call.data.get("color", ""))
         async_dispatcher_send(hass, SIGNAL_DATA_UPDATED)
 
+    async def svc_set_category_icon(call: ServiceCall):
+        await store.set_category_icon(call.data["category_id"], call.data.get("icon", ""))
+        async_dispatcher_send(hass, SIGNAL_DATA_UPDATED)
+
     hass.services.async_register(DOMAIN, "add_category", svc_add_category)
     hass.services.async_register(DOMAIN, "rename_category", svc_rename_category)
     hass.services.async_register(DOMAIN, "delete_category", svc_delete_category)
     hass.services.async_register(DOMAIN, "set_category_color", svc_set_category_color)
+    hass.services.async_register(DOMAIN, "set_category_icon", svc_set_category_icon)
     # Shop
     hass.services.async_register(DOMAIN, "add_shop_item", svc_add_shop_item)
     hass.services.async_register(DOMAIN, "update_shop_item", svc_update_shop_item)
